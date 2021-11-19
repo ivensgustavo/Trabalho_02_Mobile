@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ScreenNavigation</string>
+    <string name="add_label">Adicionar</string>
+    <string name="name_label">Nome</string>
+    <string name="position_label">Posição</string>
+    <string name="club_label">Clube</string>
+    <string name="value_label">Valor</string>
+</resources>
