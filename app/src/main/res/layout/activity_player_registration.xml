@@ -101,10 +101,23 @@
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/add_player_button_registration"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/add_label"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp">
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="2"
+            android:text="@string/cancel_label"/>
+        <Button
+            android:id="@+id/add_player_button_registration"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="2"
+            android:layout_marginStart="8dp"
+            android:text="@string/add_label"/>
+    </LinearLayout>
+
 </LinearLayout>

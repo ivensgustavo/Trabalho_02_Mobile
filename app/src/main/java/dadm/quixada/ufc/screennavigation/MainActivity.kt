@@ -11,8 +11,7 @@ import dadm.quixada.ufc.screennavigation.models.Player
 
 class MainActivity : AppCompatActivity() {
 
-    private val REQUEST_ADD: Int = 1
-    private  val playerList: ArrayList<Player> = this.populatePlayerList()
+    private  lateinit var playerList: ArrayList<Player>
     private lateinit var adapter: PlayersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,11 +19,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val playersListView: ListView = findViewById(R.id.players_list_view)
+        playerList = this.populatePlayerList()
         adapter = PlayersAdapter(this, playerList)
 
         playersListView.adapter = adapter
 
-        handleAddPlayerButton()
+        this. handleAddPlayerButton()
     }
 
     private fun populatePlayerList(): ArrayList<Player> {
@@ -36,15 +36,15 @@ class MainActivity : AppCompatActivity() {
         return playerList
     }
 
-    fun handleAddPlayerButton() {
+    private fun handleAddPlayerButton() {
         val btnAddPlayer: Button = findViewById(R.id.add_player_button)
 
         btnAddPlayer.setOnClickListener {
             val intent = Intent(this, PlayerRegistrationActivity::class.java)
             val newPlayerID: Int = playerList.size + 1
-            intent.putExtra("request_code", REQUEST_ADD)
+            intent.putExtra("request_code", R.integer.REQUEST_ADD)
             intent.putExtra("id", newPlayerID)
-            startActivityForResult(intent, REQUEST_ADD)
+            startActivityForResult(intent, R.integer.REQUEST_ADD)
         }
 
     }
@@ -52,12 +52,12 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         when(resultCode){
-            1 -> {
+            R.integer.RESULT_ADD -> {
                 if (data != null) {
                     addNewPlayer(getReturnedPlayer(data))
                 }
             }
-            2 -> {
+            R.integer.RESULT_EDIT -> {
                 if (data != null) {
                     editPlayer(getReturnedPlayer(data))
                 }
@@ -86,6 +86,5 @@ class MainActivity : AppCompatActivity() {
         playerList[player.id - 1] = player
         adapter.notifyDataSetChanged()
     }
-
 
 }

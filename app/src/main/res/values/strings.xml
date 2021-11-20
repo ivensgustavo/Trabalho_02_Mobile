@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">ScreenNavigation</string>
     <string name="add_label">Adicionar</string>
+    <string name="edit_label">Editar</string>
     <string name="name_label">Nome</string>
     <string name="position_label">Posição</string>
     <string name="club_label">Clube</string>
     <string name="value_label">Valor</string>
+    <string name="cancel_label">Cancelar</string>
+    <string name="add_screen_label">Adicionar novo jogador</string>
+    <string name="edit_screen_label">Editar jogador</string>
 </resources>

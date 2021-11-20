@@ -36,14 +36,14 @@ class PlayersAdapter(private val context: Activity, private val playerList: Arra
         editPlayerLink.setOnClickListener {
             val intent = Intent(context, PlayerRegistrationActivity::class.java)
 
-            intent.putExtra("request_code", 2)
+            intent.putExtra("request_code", R.integer.REQUEST_EDIT)
             intent.putExtra("id", player.id)
             intent.putExtra("name", player.name)
             intent.putExtra("position", player.position)
             intent.putExtra("club", player.club)
             intent.putExtra("value", player.value)
 
-            context.startActivityForResult(intent, 2)
+            context.startActivityForResult(intent, R.integer.REQUEST_EDIT)
         }
 
         return view

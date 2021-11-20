@@ -14,28 +14,32 @@ class PlayerRegistrationActivity : AppCompatActivity() {
     var id: Int = 0
     private lateinit var titleTextView: TextView
     private lateinit var actionButton: Button
+    private lateinit var cancelButton: Button
     private lateinit var idTextView: TextView
     private lateinit var nameEditText: TextInputEditText
     private lateinit var positionEditText: TextInputEditText
     private lateinit var clubEditText: TextInputEditText
     private lateinit var valueEditText: TextInputEditText
-    val RESULT_ADD: Int = 1
-    val RESULT_EDIT: Int = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player_registration)
 
+        this.initializeViews()
+        this.handleRequestCode()
+        this.configureActionButton()
+        this.configureCancelButton()
+    }
+
+    private fun initializeViews() {
         titleTextView = findViewById(R.id.title_registration_screen)
         actionButton = findViewById(R.id.add_player_button_registration)
+        cancelButton = findViewById(R.id.cancel_button)
         idTextView = findViewById(R.id.player_id_registration)
         nameEditText = findViewById(R.id.player_name_input_text)
         positionEditText = findViewById(R.id.player_position_input_text)
         clubEditText = findViewById(R.id.player_club_input_text)
         valueEditText = findViewById(R.id.player_value_input_text)
-
-        this.handleRequestCode()
-        this.configureActionButton()
     }
 
     private fun getRequestCode(): Int {
@@ -49,12 +53,12 @@ class PlayerRegistrationActivity : AppCompatActivity() {
 
     private fun getResultCode(): Int {
 
-        var resultCode: Int = 0
+        var resultCode = 0
 
-        when(getRequestCode()){
-            1 -> resultCode = RESULT_ADD
-            2 -> resultCode = RESULT_EDIT
-            else -> resultCode = 0
+        resultCode = when(getRequestCode()){
+            R.integer.REQUEST_ADD -> R.integer.RESULT_ADD
+            R.integer.REQUEST_EDIT -> R.integer.RESULT_EDIT
+            else -> 0
         }
 
         return resultCode
@@ -64,9 +68,9 @@ class PlayerRegistrationActivity : AppCompatActivity() {
 
         val requestCode = this.getRequestCode()
 
-        if(requestCode == 2){
+        if(requestCode == R.integer.REQUEST_EDIT){
             fillFields()
-            modifyTitleAndButton("Editar jogador", "Editar")
+            modifyTitleAndButton(getString(R.string.edit_screen_label), getString(R.string.edit_label))
         }else {
             fillID()
         }
@@ -103,6 +107,12 @@ class PlayerRegistrationActivity : AppCompatActivity() {
 
             val resultCode = this.getResultCode()
             setResult(resultCode, intent)
+            finish()
+        }
+    }
+
+    private fun configureCancelButton() {
+        cancelButton.setOnClickListener {
             finish()
         }
     }
