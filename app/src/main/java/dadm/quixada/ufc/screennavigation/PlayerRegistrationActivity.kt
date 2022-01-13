@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.screennavigation.models.Player
 
 class PlayerRegistrationActivity : AppCompatActivity() {
 
-    var id: Int = 0
+    var id: String = ""
     private lateinit var titleTextView: TextView
     private lateinit var actionButton: Button
     private lateinit var cancelButton: Button
@@ -82,8 +85,8 @@ class PlayerRegistrationActivity : AppCompatActivity() {
     }
 
     private fun fillID(){
-        id = intent.extras?.get("id") as Int
-        idTextView.text = "ID: " + id.toString()
+        id = intent.extras?.get("id").toString()
+        idTextView.text = "ID: " + id
     }
 
     private fun fillFields() {
@@ -97,17 +100,7 @@ class PlayerRegistrationActivity : AppCompatActivity() {
 
     private fun configureActionButton(){
         actionButton.setOnClickListener {
-
-            val intent = Intent()
-            intent.putExtra("id", id )
-            intent.putExtra("name", nameEditText.text.toString())
-            intent.putExtra("position", positionEditText.text.toString())
-            intent.putExtra("club", clubEditText.text.toString())
-            intent.putExtra("value", valueEditText.text.toString().toFloat())
-
-            val resultCode = this.getResultCode()
-            setResult(resultCode, intent)
-            finish()
+            saveOrUpdatePlayer()
         }
     }
 
@@ -115,5 +108,41 @@ class PlayerRegistrationActivity : AppCompatActivity() {
         cancelButton.setOnClickListener {
             finish()
         }
+    }
+
+    private fun saveOrUpdatePlayer(){
+        val player = Player(
+            id,
+            nameEditText.text.toString(),
+            positionEditText.text.toString(),
+            clubEditText.text.toString(),
+            valueEditText.text.toString().toFloat()
+        )
+
+        val db = Firebase.firestore
+
+        db.collection("players").document(id.toString())
+            .set(player)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful){
+                    val intent = Intent()
+                    intent.putExtra("id", player.id )
+                    intent.putExtra("name", player.name)
+                    intent.putExtra("position", player.position)
+                    intent.putExtra("club", player.club)
+                    intent.putExtra("value", player.value)
+
+                    val resultCode = this.getResultCode()
+                    setResult(resultCode, intent)
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Ocorreu um erro ao salvar o jogador. Tente novamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
     }
 }
